@@ -6,9 +6,7 @@ I used a lot of new things to me with the Rust language. I used the AES-256-GCM 
 
 I thought it would be fun to build something a little more complex (at least it felt that way to me) for learning the Rust language. I felt like it  had its challenges and I also thought it had some common things that would be good to know/master when learning this language.
 
-{Provide a link to your YouTube demonstration. It should be a 4-5 minute demo of the software running and a walkthrough of the code. Focus should be on sharing what you learned about the language syntax.}
-
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/3iu9Ne8iaLk)
 
 # Development Environment
 

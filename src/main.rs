@@ -20,6 +20,7 @@ use rpassword::prompt_password;
 
 const KEY_FILE: &str = "keyfile";
 
+// Retrieves or generates an encryption key used for password encryption.
 fn get_key() -> Vec<u8> {
     let proj_dirs = ProjectDirs::from("com", "example", "password_manager").unwrap();
     let config_dir = proj_dirs.config_dir(); // Get the config directory
@@ -39,7 +40,7 @@ fn get_key() -> Vec<u8> {
     key.to_vec()
 }
 
-// Encrypt passwords before storing them:
+// Encrypts a given password using AES-256-GCM.
 fn encrypt_password(password: &str, key: &[u8]) -> Vec<u8> {
     let cipher = Aes256Gcm::new(Key::<Aes256Gcm>::from_slice(key));
 
@@ -54,6 +55,7 @@ fn encrypt_password(password: &str, key: &[u8]) -> Vec<u8> {
     encrypted_data
 }
 
+// Decrypts an encrypted password.
 fn decrypt_password(encrypted_data: &[u8], key: &[u8]) -> String {
     let cipher = Aes256Gcm::new(Key::<Aes256Gcm>::from_slice(key));
 
@@ -71,6 +73,7 @@ struct PasswordEntry {
     encrypted_password: Vec<u8>,
 }
 
+// Encrypts and saves a password for a given service.
 fn save_password(service: &str, password: &str, key: &[u8]) {
     let encrypted_password = encrypt_password(password, key);
     let entry = PasswordEntry {
@@ -98,6 +101,7 @@ fn save_password(service: &str, password: &str, key: &[u8]) {
     fs::write(&data_path, serde_json::to_string(&passwords).unwrap()).expect("Failed to write passwords file");
 }
 
+// Retrieves and decrypts a stored password.
 fn retrieve_password(service: &str, key: &[u8]) -> Option<String> {
     let proj_dirs = ProjectDirs::from("com", "example", "password_manager").unwrap();
     let data_path = proj_dirs.data_dir().join("passwords.json");
@@ -112,7 +116,7 @@ fn retrieve_password(service: &str, key: &[u8]) -> Option<String> {
     passwords.get(service).map(|entry| decrypt_password(&entry.encrypted_password, key))
 }
 
-//Finally, let's add a simple CLI:
+// Provides a simple Command-Line Interface (CLI) for saving and retrieving passwords.
 fn main() {
     let key = get_key();
 
